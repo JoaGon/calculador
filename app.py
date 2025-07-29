@@ -110,8 +110,10 @@ def generar_pdf():
     pdf.cell(200, 10, f"Costo Directo: ${costo_directo:.2f}", ln=True)
 
     # Generar PDF como bytes usando dest='S'
-    pdf_bytes = pdf.output(dest='S')
-    return pdf_bytes
+    result = pdf.output(dest='S')
+    if isinstance(result, str):
+        return result.encode('latin-1')  # Para versiones que devuelven str
+    return bytes(result)  # Para versiones que devuelven bytearray
 
 pdf_bytes = generar_pdf()
 st.download_button(
